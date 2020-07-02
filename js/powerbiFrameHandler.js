@@ -112,7 +112,16 @@
             for (var e = document.querySelectorAll('.pbi-resize-container'), i = 0; i < e.length; i++) {
                 prepareForResize(e, i, imgOnlys);
             }
-        };
+		};
+		
+		function findInArr(arr, str) {
+			for ( i=0 ; i < arr.length ; i++ ) {
+				if ( str.includes(arr[i]) ) {
+					return true;
+				}
+			}
+			return false;
+		}
 
         function prepareForResize(e, i, imgOnlys) {
             var pbiSrcSlug = 'https://app.powerbi.com/view?r=';
@@ -143,7 +152,7 @@
             var resizedToMobile = ((iframe && iframe.src == webSrc) || (img && img.src == webImg)) && !isWebSize && mobileSrc != webSrc;
             var currentSrcIsImage = e[i].children.length > 1 ? !0 : !1;
             var imgSrcToUse = (!isWebSize && mobileImg) ? mobileImg : webImg;
-            if (img && imgOnlys.find(v => imgSrcToUse.includes(v))) {
+            if (img && findInArr(imgOnlys, imgSrcToUse) ) {
                 var parent = img.parentNode;
                 var button = getChildByTag(parent, 'div');
                 if (button) {
