@@ -108,7 +108,7 @@
             }
         }
         var e = function() {
-            let imgOnlys = ['top-hub', 'multis'];
+            var imgOnlys = ['top-hub', 'multis'];
             for (var e = document.querySelectorAll('.pbi-resize-container'), i = 0; i < e.length; i++) {
                 prepareForResize(e, i, imgOnlys);
             }
