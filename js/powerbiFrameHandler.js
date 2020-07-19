@@ -131,7 +131,8 @@
                         span.style.bottom = '0px';
                         span.style.width = '100%';
                         span.style.textAlign = 'center';
-                        span.style.fontSize = '1.2rem';
+                        span.style.fontSize = '1.3rem';
+                        span.style.lineHeight = 'normal';
                         span.style.backgroundColor = '#efefef';
                         span.style.cursor = 'pointer';
                         span.style.borderTop = '1px #c5c5c5 solid';
