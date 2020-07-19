@@ -60,7 +60,7 @@
             if (button) {
                 parent.removeChild(button)
             }
-            var spinner = getChildByTag(parent, 'span');
+            var spinner = parent.querySelector('.pbi-resize-spinner');
             if (spinner) {
                 parent.removeChild(spinner)
             }
@@ -75,7 +75,7 @@
         function setButtonState(button, state) {
             button.setAttribute('data-state', state);
             var text = '';
-            var spinner = getChildByTag(button, 'span');
+            var spinner = button.querySelector('.pbi-resize-spinner');
             button.innerHTML = text + spinner.outerHTML;
             switch (state) {
                 case 'loading':
@@ -93,7 +93,7 @@
                     break;
                 case 'ready':
                     resize();
-                    var spinner = getChildByTag(button, 'span');
+                    var spinner = button.querySelector('.pbi-resize-spinner');
                     spinner.style.display = 'none';
                     button.style.width = 'auto';
                     button.onclick = function(e) {
@@ -111,17 +111,60 @@
             var imgOnlys = ['top-hub', 'multis'];
             for (var e = document.querySelectorAll('.pbi-resize-container'), i = 0; i < e.length; i++) {
                 prepareForResize(e, i, imgOnlys);
+                showMoreForMultis(e, i);
             }
-		};
-		
-		function findInArr(arr, str) {
-			for ( i=0 ; i < arr.length ; i++ ) {
-				if ( str.includes(arr[i]) ) {
-					return true;
-				}
-			}
-			return false;
-		}
+        };
+
+        function showMoreForMultis(e, i) {
+            if (e[i].classList.contains('multis') && !e[i].classList.contains('can-show-more')) {
+                e[i].classList.add('can-show-more');
+                getChildByTag(e[i], 'img').onload = function(eve) {
+                    var isMobile = getPageWidth() <= 940;
+                    var naturalHeight = eve.currentTarget.naturalHeight;
+                    var imgHeightCut = isMobile ? '2400' : '1040';
+                    if (naturalHeight >= imgHeightCut) {
+                        eve.currentTarget.style.height = 'auto';
+                        eve.currentTarget.parentNode.style.height = '500px';
+                        var span = document.createElement('span');
+                        span.setAttribute('class', 'show-more');
+                        span.style.position = 'absolute';
+                        span.style.bottom = '0px';
+                        span.style.width = '100%';
+                        span.style.textAlign = 'center';
+                        span.style.fontSize = '1.2rem';
+                        span.style.backgroundColor = '#efefef';
+                        span.style.cursor = 'pointer';
+                        span.style.borderTop = '1px #c5c5c5 solid';
+                        span.style.borderBottom = '1px #c5c5c5 solid';
+                        span.style.padding = '4px 0';
+                        span.textContent = 'Show More';
+
+                        span.addEventListener('click', function(spanE) {
+                            var curHiding = spanE.currentTarget.classList.contains('show-more');
+                            if (curHiding) {
+                                spanE.currentTarget.parentNode.style.height = 'auto';
+                                spanE.currentTarget.classList.remove('show-more');
+                                spanE.currentTarget.textContent = 'Show Less';
+                            } else {
+                                spanE.currentTarget.parentNode.style.height = '500px';
+                                spanE.currentTarget.classList.add('show-more');
+                                spanE.currentTarget.textContent = 'Show More';
+                            }
+                        })
+                        eve.currentTarget.parentNode.insertBefore(span, eve.currentTarget);
+                    }
+                }
+            }
+        }
+
+        function findInArr(arr, str) {
+            for (i = 0; i < arr.length; i++) {
+                if (str.includes(arr[i])) {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         function prepareForResize(e, i, imgOnlys) {
             var pbiSrcSlug = 'https://app.powerbi.com/view?r=';
@@ -152,17 +195,22 @@
             var resizedToMobile = ((iframe && iframe.src == webSrc) || (img && img.src == webImg)) && !isWebSize && mobileSrc != webSrc;
             var currentSrcIsImage = e[i].children.length > 1 ? !0 : !1;
             var imgSrcToUse = (!isWebSize && mobileImg) ? mobileImg : webImg;
-            if (img && findInArr(imgOnlys, imgSrcToUse) ) {
+
+
+            if (img && findInArr(imgOnlys, imgSrcToUse)) {
                 var parent = img.parentNode;
                 var button = getChildByTag(parent, 'div');
                 if (button) {
                     parent.removeChild(button)
                 }
-                var spinner = getChildByTag(parent, 'span');
+                var spinner = parent.querySelector('.pbi-resize-spinner');
                 if (spinner) {
-                    parent.removeChild(spinner)
+                    parent.removeChild(spinner);
                 }
-                img.setAttribute('src', imgSrcToUse);
+                var curImgSrc = img.getAttribute('src');
+                if (!curImgSrc || imgSrcToUse !== curImgSrc) {
+                    img.setAttribute('src', imgSrcToUse);
+                }
                 if (iframe) {
                     iframe.style.position = 'absolute';
                     iframe.style.top = 0;
@@ -290,7 +338,7 @@
         function loadIframe(parent, src) {
             var iframe = getChildByTag(parent, 'iframe');
             var button = getChildByTag(parent, 'div');
-            var spinner = getChildByTag(button, 'span');
+            var spinner = button.querySelector('.pbi-resize-spinner');
             spinner.style.display = 'block';
             iframe.setAttribute('src', src);
             iframe.setAttribute('frameborder', '0');
