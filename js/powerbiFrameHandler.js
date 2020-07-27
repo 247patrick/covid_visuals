@@ -358,7 +358,7 @@
         }
 
         function getLastUpdated() {
-            var url = 'https://cdn.jsdelivr.net/gh/247patrick/covid_visuals/json/state-info.json';
+            var url = 'https://raw.githubusercontent.com/247patrick/covid_visuals/master/json/state-info.json';
             var state = getStateName();
             if (!state) return null;
             fetch(url)
