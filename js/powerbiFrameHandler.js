@@ -346,5 +346,30 @@
             iframe.setAttribute('allowFullScreen', 'true');
             setButtonState(button, 'loading')
         }
+
+        function getStateName() {
+            var node = document.querySelector('.pbi-resize-container');
+            if (!node) return false;
+            var imgAttr = node.getAttribute('pbi-resize-img');
+            if (!imgAttr) return false;
+            var idx = imgAttr.split('/').indexOf('images');
+            if (!idx) return false;
+            return imgAttr.split('/')[idx+1];
+        }
+
+        function getLastUpdated() {
+            var url = 'https://cdn.jsdelivr.net/gh/247patrick/covid_visuals/json/state-info.json';
+            var state = getStateName();
+            if (!state) return null;
+            fetch(url)
+            .then(res => res.json())
+            .then(resJson => {
+                if (resJson.states && resJson.states[state] && resJson.states[state].last_updated) {
+                    var last_updated = resJson.states[state].last_updated;
+                    console.log(last_updated);
+                }
+            });
+        }
+        document.addEventListener("DOMContentLoaded", getLastUpdated);
     }
 }());
