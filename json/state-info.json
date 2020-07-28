@@ -2,6 +2,21 @@
     "states": {
         "new_york": {
             "last_updated": "Last Updated July 27, 2020, 10:35 A.M. E.T."
+        },
+        "arizona": {
+            "last_updated": "Last Updated July 27, 2020, 10:35 A.M. E.T."
+        },
+        "florida": {
+            "last_updated": "Last Updated July 27, 2020, 10:35 A.M. E.T."
+        },
+        "idaho": {
+            "last_updated": "Last Updated July 27, 2020, 10:35 A.M. E.T."
+        },
+        "south_dakota": {
+            "last_updated": "Last Updated July 27, 2020, 10:35 A.M. E.T."
+        },
+        "north_dakota": {
+            "last_updated": "Last Updated July 27, 2020, 10:35 A.M. E.T."
         }
     }
 }
