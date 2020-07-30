@@ -365,11 +365,27 @@
             .then(res => res.json())
             .then(resJson => {
                 if (resJson.states && resJson.states[state] && resJson.states[state].last_updated) {
-                    var last_updated = resJson.states[state].last_updated;
-                    console.log(last_updated);
+                    var lastUpdated = resJson.states[state].last_updated;
+                    addLastUpdated(lastUpdated);
                 }
             });
         }
         document.addEventListener("DOMContentLoaded", getLastUpdated);
+
+        function addLastUpdated(lastUpdated) {
+            var ptag = document.createElement('p');
+            var timetag = document.createElement('time');
+            var anchor = document.getElementsByClassName('pbi-resize-container')[0];
+            if ( !anchor ) return null;
+            ptag.style.marginBottom = '0.5px';
+            ptag.style.fontWeight = '500';
+            ptag.style.textAlign = 'right';
+            ptag.style.color = '#333333';
+            ptag.style.marginRight = '5px';
+            timetag.setAttribute('class', 'pbi-last-updated-time');
+            timetag.textContent = lastUpdated;
+            ptag.appendChild(timetag);
+            anchor.parentNode.insertBefore( ptag, anchor );
+        }
     }
 }());
